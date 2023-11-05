@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Library Management System</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-container {
+            background-color: #85c1e9;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .book-list-container {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #d39797;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .book-list-container:hover {
+            background-color: #f2aaaa;
+            transform: scale(1.02);
+        }
+
+        .add-book-container {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8c471;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .add-book-container:hover {
+            background-color: #e59866;
+            transform: scale(1.02);
+        }
+
+        .search-container {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f1948a;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .search-container:hover {
+            background-color: #e74c3c;
+            transform: scale(1.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #85c1e9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #5dade2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1>Online Library Management System</h1>
+    </div>
+    <div class="container">
+        <div class="main-container">
+            <div class="book-list-container">
+                <h2>Book List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Book list entries will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="add-book-container">
+                <h2>Add New Book</h2>
+                <input type="text" id="title" placeholder="Title">
+                <input type="text" id="author" placeholder="Author">
+                <button onclick="addBook()">Add Book</button>
+            </div>
+            <div class="search-container">
+                <h2>Search for Books</h2>
+                <input type="text" id="searchInput" placeholder="Search...">
+                <button onclick="searchBooks()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bookList = document.querySelector("tbody");
+        const titleInput = document.getElementById("title");
+        const authorInput = document.getElementById("author");
+        const searchInput = document.getElementById("searchInput");
+
+        function addBook() {
+            const title = titleInput.value;
+            const author = authorInput.value;
+
+            
+            const rows = bookList.getElementsByTagName("tr");
+            for (let i = 0; i < rows.length; i++) {
+                const titleCell = rows[i].getElementsByTagName("td")[0];
+                if (titleCell.textContent === title) {
+                    alert("This book already exists!");
+                    return;
+                }
+            }
+
+           
+            if (title && author) {
+                const row = bookList.insertRow();
+                const titleCell = row.insertCell(0);
+                const authorCell = row.insertCell(1);
+                titleCell.textContent = title;
+                authorCell.textContent = author;
+
+                
+                titleInput.value = "";
+                authorInput.value = "";
+            }
+        }
+
+        function searchBooks() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const rows = bookList.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const title = rows[i].getElementsByTagName("td")[0];
+                const author = rows[i].getElementsByTagName("td")[1];
+                if (title || author) {
+                    const titleText = title.textContent || title.innerText;
+                    const authorText = author.textContent || author.innerText;
+
+                    if (titleText.toLowerCase().includes(searchTerm) || authorText.toLowerCase().includes(searchTerm)) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
